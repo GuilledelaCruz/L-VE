@@ -1,4 +1,4 @@
-# L-VE
+# LÖVE
 LÖVE 2D game engine in LUA proyects
 
 LÖVE documentation
