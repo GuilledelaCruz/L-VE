@@ -63,7 +63,7 @@ function love.update(dt)
 
 	-- update enemies
 	for i, enemy in ipairs(enemies) do
-		enemy.y = enemy.y - (enemySpeed * dt)
+		enemy.y = enemy.y + (enemySpeed * dt)
 
 		if enemy.y > 650 then
 			table.remove(enemies, i)
@@ -79,17 +79,18 @@ function love.update(dt)
 	end
 
 	--checkcollisions
-	for i,enemy in ipairs(enemies) do
-		for j,bullet in ipairs(bullets) do
+	for i, enemy in ipairs(enemies) do
+		for j, bullet in ipairs(bullets) do
 			if checkCollision(enemy.x,enemy.y,enemy.img:getWidth(),enemy.img:getHeight(),
 						bullet.x,bullet.y,bullet.img:getWidth(),enemy.img:getHeight()) then
 				table.remove(enemies, i)
 				table.remove(bullets, j)
 				score = score + 10
+			end
 		end
 		
 		if checkCollision(enemy.x, enemy.y, enemy.img:getWidth(), enemy.img:getHeight(),
-					player.x, player.y, player.img:getWidth(), player.img:getHeight()) then
+					player.x, player.y, player.img:getWidth(), player.img:getHeight()) and isAlive then
 			table.remove(enemies, i)
 			isAlive = false
 		end
@@ -101,7 +102,7 @@ function love.update(dt)
 			player.x = player.x - (player.speed * dt)
 		end
 	elseif love.keyboard.isDown('right','d') then
-		if player.x < (love.graphics.getWidth() - player.img.getWidth()) then
+		if player.x < (love.graphics.getWidth() - player.img:getWidth()) then
 			player.x = player.x + (player.speed * dt)
 		end
 	end
@@ -112,7 +113,7 @@ function love.update(dt)
 		enemies = {}
 
 		canShootTimer = canShootTimerMax
-		createEnemyTimer = createTimerEnemyMax
+		createEnemyTimer = createEnemyTimerMax
 
 		player.x = 190
 		player.y = 500
@@ -124,12 +125,12 @@ end
 
 function love.draw(dt)
 	-- draw shoots
-	for i,bullet in ipairs(bullets) do
+	for i, bullet in ipairs(bullets) do
 		love.graphics.draw(bullet.img, bullet.x, bullet.y)
 	end
 
 	-- draw enemies
-	for i,enemy in ipairs(enemies) do
+	for i, enemy in ipairs(enemies) do
 		love.graphics.draw(enemy.img, enemy.x, enemy.y)
 	end
 	
@@ -140,6 +141,6 @@ function love.draw(dt)
 	if isAlive then
 		love.graphics.draw(player.img, player.x, player.y)
 	else
-		love.graphics.print("Press 'R' to restart", love.graphics.getWidth()/2 - 50, love.graphics.getHeight()/2 - 10)
+		love.graphics.print("Press 'R' to restart", love.graphics:getWidth()/2 - 50, love.graphics:getHeight()/2 - 10)
 	end
 end
